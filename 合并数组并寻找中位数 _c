@@ -1,0 +1,86 @@
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) 
+{
+    int s=nums1Size+nums2Size; 
+    int* ans = (int*)malloc(s*sizeof(int));
+    int i,j;
+    
+    for(i=0;i<nums1Size;i++)
+    {
+        ans[i]=nums1[i];
+    }
+    for(j=nums1Size+1;j<s;j++)
+    {
+        ans[j]=nums2[j];
+    }
+    int k,m;
+    for(k=0;k<s;k++)
+    {
+        
+        for(m=0;m<s-k-1;k++)
+        {
+            if(ans[m]>ans[m+1])
+            {
+                int temp=ans[m];
+                ans[m]=ans[m+1];
+                ans[m+1]=temp;
+            }
+
+        }
+    }
+
+    if(s%2!=0)
+    {
+        return ans[(s+1)/2];
+    }
+    else
+    {
+        return (ans[s/2]+ans[(s/2)+1])/2;
+    }
+
+    
+}
+//这是我写的代码，翻译的时候是报错的，接下来是正确代码
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size)
+{
+    int s = nums1Size + nums2Size;
+    int* ans = (int*)malloc(s * sizeof(int));
+    int i, j;
+
+    // 第一步：复制nums1到ans，i < nums1Size ！！
+    for(i = 0; i < nums1Size; i++)
+    {
+        ans[i] = nums1[i];
+    }
+    // 第二步：复制nums2，从ans的 nums1Size 位置开始放
+    for(j = 0; j < nums2Size; j++)
+    {
+        ans[nums1Size + j] = nums2[j];
+    }
+
+    // 冒泡排序整个ans数组
+    int k, m, temp;
+    for(k = 0; k < s - 1; k++)
+    {
+        for(m = 0; m < s - 1 - k; m++)
+        {
+            if(ans[m] > ans[m+1])
+            {
+                temp = ans[m];
+                ans[m] = ans[m+1];
+                ans[m+1] = temp;
+            }
+        }
+    }
+
+    double res;
+    if(s % 2 == 1)
+    {
+        res = ans[s / 2];
+    }
+    else
+    {
+        res = (ans[s/2 - 1] + ans[s/2]) / 2.0;
+    }
+    free(ans);
+    return res;
+}
