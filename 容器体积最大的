@@ -1,0 +1,57 @@
+int maxArea(int* height, int heightSize)
+{
+    int maxarea = 0;
+    int i;
+    int j;
+    int h;
+    int area;
+    for(i = 0 ; i < heightSize; i++)
+    {
+        for(j = i + 1 ; j < heightSize; j++)
+        {
+            h = (height[i] < height[j]) ? height[i] : height[j];
+            area = h * (j - i);
+            if(area > maxarea)
+            {
+                maxarea = area;
+            }
+        }
+    }
+    return maxarea;
+}
+//这可是我一开始写的，时间复杂度超了，0分
+//这题的逻辑是双指针
+int maxArea(int* height, int heightSize)
+{
+    int left;
+    int right;
+    int maxarea;
+    int h;
+    int area;
+
+    left = 0;
+    right = heightSize - 1;
+    maxarea = 0;
+
+    while(left < right)
+    {
+        // 取矮的柱子作为水位高度
+        h = height[left] < height[right] ? height[left] : height[right];
+        area = h * (right - left);
+
+        if(area > maxarea)
+        {
+            maxarea = area;
+        }
+        // 核心规则：移动更矮的那根
+        if(height[left] < height[right])
+        {
+            left++;
+        }
+        else
+        {
+            right--;
+        }
+    }
+    return maxarea;
+}
